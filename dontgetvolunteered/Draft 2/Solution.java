@@ -11,9 +11,10 @@ public class Solution {
 
         // call the method
 
-        System.out.println(obj.solution(0, 36));
-        System.out.println(obj.solution(0, 1));
-        System.out.println(obj.solution(0, 2));
+        System.out.println(obj.solution(0, 63));
+        System.out.println(obj.solution(0, 0));
+        // System.out.println(obj.solution(0, 1));
+        // System.out.println(obj.solution(0, 2));
         System.out.println(obj.solution(19, 36));
 
         // get the end time
@@ -34,7 +35,7 @@ public class Solution {
 
     public static int solution(int start, int end) {
 
-        System.out.println("\n\n\nsolution( " + start + " , " + end + " )");
+        // System.out.println("\n\n\nsolution( " + start + " , " + end + " )");
 
         int startRow = start / 8;
         int startCol = start % 8;
@@ -42,72 +43,57 @@ public class Solution {
         int endRow = end / 8;
         int endCol = end % 8;
 
-        System.out.println("startRow: " + startRow + " startCol: " + startCol);
-        System.out.println("endRow: " + endRow + " endCol: " + endCol);
+        // System.out.println("startRow: " + startRow + " startCol: " + startCol);
+        // System.out.println("endRow: " + endRow + " endCol: " + endCol);
 
-        int rowDiff = Math.abs(startRow - endRow);
-        int colDiff = Math.abs(startCol - endCol);
+        int limit = 1;
 
-        System.out.println("rowDiff: " + rowDiff + " colDiff: " + colDiff);
+        if (start == end)
+            return 0;
 
-        int count = 0;
-        int limit = 0;
-
-        while (count == 0) {
+        while (!calculateNextIndex(startRow, startCol, endRow, endCol, 0, limit)) {
             limit++;
-            count = calculateNextIndex(startRow, startCol, endRow, endCol, 0, limit);
         }
-        return count;
+
+        return limit;
     }
 
-    static int calculateNextIndex(int row, int col, int destRow, int destCol, int current, int limit) {
+    static boolean calculateNextIndex(int row, int col, int destRow, int destCol, int current, int limit) {
 
-        System.out.println("calculateNextIndex( " + row + " , " + col + " , " + destRow + " , " + destCol + " , "
-                + current + " , " + limit + " )");
+        // System.out.println("calculateNextIndex( " + row + " , " + col + " , " +
+        // destRow + " , " + destCol + " , "
+        // + current + " , " + limit + " )");
 
         int rowDiff = Math.abs(row - destRow);
         int colDiff = Math.abs(col - destCol);
 
         if (rowDiff == 0 && colDiff == 0) {
-            System.out.println("Reached destination in " + current + " moves.");
-            return limit;
+            // System.out.println("Reached destination in " + current + " moves.");
+            return true;
         }
 
         if (current == limit) {
-            System.out.println("Reached limit. No possible moves.");
-            return 0;
+            // System.out.println("Reached limit. No possible moves.");
+            return false;
         }
 
         for (int i = 0; i < moves.length; i++) {
             if (row + moves[i][0] >= 0 && row + moves[i][0] < 8 && col + moves[i][1] >= 0 && col + moves[i][1] < 8) {
-                System.out
-                        .println("Move" + i + "\nrow: " + (row + moves[i][0]) + " col: " + (col + moves[i][1]) + "\n");
-                int result = calculateNextIndex(row + moves[i][0], col + moves[i][1], destRow, destCol, current + 1,
-                        limit);
-                if (result != 0)
-                    return result;
+                // System.out
+                // .println("Move" + i + "\nrow: " + (row + moves[i][0]) + " col: " + (col +
+                // moves[i][1]) + "\n");
+
+                if (calculateNextIndex(row + moves[i][0], col + moves[i][1], destRow, destCol, current + 1,
+                        limit))
+                    return true;
             }
 
         }
 
-        System.out.println("No 8possible moves");
+        // System.out.println("No 8possible moves");
 
-        return 0;
+        return false;
 
-    }
-
-    static public int[] possibleMoves(int row, int col) {
-
-        int possible[] = new int[8];
-        int index = 0;
-        for (int i = 0; i < moves.length; i++) {
-            if (row + moves[i][0] >= 0 && row + moves[i][0] < 8 && col + moves[i][1] >= 0 && col + moves[i][1] < 8) {
-                possible[index++] = i;
-                System.out
-                        .println("Move" + i + "\nrow: " + (row + moves[i][0]) + " col: " + (col + moves[i][1]) + "\n");
-            }
-        }
-        return possible;
     }
 
 }
