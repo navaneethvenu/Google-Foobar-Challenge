@@ -1,0 +1,28 @@
+abcabcabcabc
+
+1+
+
+cS(2,12,abcabcabcabc)
+    2<12
+    false
+    lop=6
+    if(<0:5(abcabc)>==<6:11(abcabc)>)
+        return 2 + 
+
+    cS(2,6,abcabc)
+        2<6
+        false
+        lop=3
+        if(<0:2(abc)>==<3:5(abc)>)
+            return 2 +
+
+        cS(2,3,abc)
+            2<3
+            true
+                return 0 +
+
+            cS(3,3,abc)
+                3>3
+                return 0
+
+0+0+2+2          
