@@ -1,3 +1,4 @@
+import java.math.BigInteger;
 
 public class Solution {
     public static void main(String[] args) {
@@ -34,9 +35,9 @@ public class Solution {
     }
 
     public static int solution(String x) {
-        System.out.print("\n\nx: " + x + "\n\n");
+        // System.out.print("\n\nx: " + x + "\n\n");
         int steps = 0;
-        long value = Long.parseLong(x);
+        BigInteger value = new BigInteger(x);
 
         steps += divideByTwo(value);
         // System.out.println(steps);
@@ -46,41 +47,48 @@ public class Solution {
         // Your code here
     }
 
-    public static int divideByTwo(long value) {
-        System.out.println(value);
-        if (value <= 1)
+    public static int divideByTwo(BigInteger value) {
+        // System.out.println(value);
+        if (value.compareTo(BigInteger.ONE) < 1)
             return 0;
-        if (value % 2 == 0) {
-            return 1 + divideByTwo(value / 2);
+        if (value.remainder(BigInteger.TWO) == BigInteger.ZERO) {
+            return 1 + divideByTwo(value.divide(BigInteger.TWO));
         } else {
-            return 1 + divideByTwo(findGreaterDivisibleValue(value - 1, value + 1));
+            return 1 + divideByTwo(
+                    findGreaterDivisibleValue(value.subtract(BigInteger.ONE), value.add(BigInteger.ONE)));
         }
 
     }
 
-    public static long findGreaterDivisibleValue(long lower, long higher) {
-        System.out.println("lower: " + lower + " higher: " + higher);
-        long result = 0;
-        if (lower % 2 == 0 && higher % 2 == 0) {
-            result = lower / 2 == findGreaterDivisibleValue(lower / 2, higher / 2) ? lower : higher;
+    public static BigInteger findGreaterDivisibleValue(BigInteger lower, BigInteger higher) {
+        // System.out.println("lower: " + lower + " higher: " + higher);
+        BigInteger result = BigInteger.ZERO;
+        if ((lower.remainder(BigInteger.TWO).compareTo(BigInteger.ZERO) == 0)
+                && (higher.remainder(BigInteger.TWO).compareTo(BigInteger.ZERO) == 0)) {
+            // System.out.println("PRINT" + lower.divide(BigInteger.TWO) + " " +
+            // higher.divide(BigInteger.TWO));
+            result = lower.divide(BigInteger.TWO).compareTo(findGreaterDivisibleValue(lower.divide(BigInteger.TWO),
+                    higher.divide(BigInteger.TWO))) == 0 ? lower : higher;
 
         } else {
-            if (lower % 2 == 0) {
+            if (lower.remainder(BigInteger.TWO).compareTo(BigInteger.ZERO) == 0) {
                 result = lower;
-            } else if (higher % 2 == 0) {
-                if (lower == 1)
+            } else if (higher.remainder(BigInteger.TWO).compareTo(BigInteger.ZERO) == 0) {
+                if (lower.compareTo(BigInteger.ONE) == 0)
                     result = lower;
                 else
                     result = higher;
             } else {
 
-                long newLower = findGreaterDivisibleValue(lower - 1, lower + 1);
-                long newHigher = findGreaterDivisibleValue(higher - 1, higher + 1);
+                BigInteger newLower = findGreaterDivisibleValue(lower.subtract(BigInteger.ONE),
+                        lower.add(BigInteger.ONE));
+                BigInteger newHigher = findGreaterDivisibleValue(higher.subtract(BigInteger.ONE),
+                        higher.add(BigInteger.ONE));
                 result = findGreaterDivisibleValue(newLower, newHigher);
             }
 
         }
-        System.out.println("result: " + result);
+        // System.out.println("result: " + result);
         return result;
     
     }
