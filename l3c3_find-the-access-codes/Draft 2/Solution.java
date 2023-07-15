@@ -85,6 +85,7 @@ public class Solution {
             String[] keys = key.split("-");
             set.add(keys[0] + "-" + keys[1]);
             set.add(keys[1] + "-" + keys[2]);
+            set.add(keys[0] + "-" + keys[2]);
         }
 
         // System.out.println(set);
@@ -102,10 +103,15 @@ public class Solution {
             if (!hasDuplicates[0] && !hasDuplicates[1])
                 continue;
 
-            result += (unique[Integer.parseInt(keys[0])][1] <= 1 ? 1
+            System.out.print("Pair Combinations: " + key + "\n");
+
+            int addedCombinations = (unique[Integer.parseInt(keys[0])][1] <= 1 ? 1
                     : sumOfNNaturalNumbers(unique[Integer.parseInt(keys[0])][1] - 1))
                     * (unique[Integer.parseInt(keys[1])][1] <= 1 ? 1
                             : sumOfNNaturalNumbers(unique[Integer.parseInt(keys[1])][1] - 1));
+
+            System.out.println("Added Combinations: " + addedCombinations + "\n");
+            result += addedCombinations;
 
         }
         return result;
