@@ -101,16 +101,12 @@ public class Solution {
             }
             if (!hasDuplicates[0] && !hasDuplicates[1])
                 continue;
-            if (hasDuplicates[0] && hasDuplicates[1]) {
-                result += sumOfNNaturalNumbers(unique[Integer.parseInt(keys[0])][1] - 1)
-                        * sumOfNNaturalNumbers(unique[Integer.parseInt(keys[1])][1] - 1);
-            } else {
-                if (hasDuplicates[0]) {
-                    result += sumOfNNaturalNumbers(unique[Integer.parseInt(keys[0])][1] - 1);
-                } else {
-                    result += sumOfNNaturalNumbers(unique[Integer.parseInt(keys[1])][1] - 1);
-                }
-            }
+
+            result += (unique[Integer.parseInt(keys[0])][1] <= 1 ? 1
+                    : sumOfNNaturalNumbers(unique[Integer.parseInt(keys[0])][1] - 1))
+                    * (unique[Integer.parseInt(keys[1])][1] <= 1 ? 1
+                            : sumOfNNaturalNumbers(unique[Integer.parseInt(keys[1])][1] - 1));
+
         }
         return result;
     }
@@ -165,6 +161,8 @@ public class Solution {
                             + currentIndex + ")"
                             + ","
                             + unique[i][0] + "(" + i + ")" + ")\n");
+
+                    System.out.print("Hello?");
 
                     System.out.println(" ".repeat(currentIndex) + "Found number of items: " +
                             unique[previousIndex][1] + " * " +
