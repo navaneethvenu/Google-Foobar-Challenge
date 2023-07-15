@@ -103,14 +103,15 @@ public class Solution {
             if (!hasDuplicates[0] && !hasDuplicates[1])
                 continue;
 
-            System.out.print("Pair Combinations: " + key + "\n");
+            // System.out.print("Pair Combinations: " + key + "\n");
 
-            int addedCombinations = (unique[Integer.parseInt(keys[0])][1] <= 1 ? 1
-                    : sumOfNNaturalNumbers(unique[Integer.parseInt(keys[0])][1] - 1))
-                    * (unique[Integer.parseInt(keys[1])][1] <= 1 ? 1
-                            : sumOfNNaturalNumbers(unique[Integer.parseInt(keys[1])][1] - 1));
+            int addedCombinations = (hasDuplicates[0] ? (sumOfNNaturalNumbers(unique[Integer.parseInt(keys[0])][1] - 1)
+                    * unique[Integer.parseInt(keys[1])][1])
+                    : 0)
+                    + (hasDuplicates[1] ? (sumOfNNaturalNumbers(unique[Integer.parseInt(keys[1])][1] - 1)
+                            * unique[Integer.parseInt(keys[0])][1]) : 0);
 
-            System.out.println("Added Combinations: " + addedCombinations + "\n");
+            // System.out.println("Added Combinations: " + addedCombinations + "\n");
             result += addedCombinations;
 
         }
@@ -150,31 +151,31 @@ public class Solution {
         // visited[currentIndex] = !addTuple;
 
         for (int i = currentIndex + 1; i < unique.length && unique[i][0] != -1; i++) {
-            System.out.println(
-                    " ".repeat(currentIndex) + "Checking " + unique[i][0] + " with " +
-                            unique[currentIndex][0]);
+            // System.out.println(
+            // " ".repeat(currentIndex) + "Checking " + unique[i][0] + " with " +
+            // unique[currentIndex][0]);
 
             if (unique[i][0] % unique[currentIndex][0] == 0
                     && (!notFirstIteration || !completed.containsKey(previousIndex + "-" + currentIndex + "-" + i))) {
-                System.out.println(" ".repeat(currentIndex)
-                        + "Found Matching " + unique[i][0] + " with " +
-                        unique[currentIndex][0]);
+                // System.out.println(" ".repeat(currentIndex)
+                // + "Found Matching " + unique[i][0] + " with " +
+                // unique[currentIndex][0]);
 
                 if (notFirstIteration) {
-                    System.out.println(" ".repeat(currentIndex)
-                            + "(" + unique[previousIndex][0] + "(" + previousIndex + ")" + "," +
-                            unique[currentIndex][0] + "("
-                            + currentIndex + ")"
-                            + ","
-                            + unique[i][0] + "(" + i + ")" + ")\n");
+                    // System.out.println(" ".repeat(currentIndex)
+                    // + "(" + unique[previousIndex][0] + "(" + previousIndex + ")" + "," +
+                    // unique[currentIndex][0] + "("
+                    // + currentIndex + ")"
+                    // + ","
+                    // + unique[i][0] + "(" + i + ")" + ")\n");
 
-                    System.out.print("Hello?");
+                    // System.out.print("Hello?");
 
-                    System.out.println(" ".repeat(currentIndex) + "Found number of items: " +
-                            unique[previousIndex][1] + " * " +
-                            unique[currentIndex][1] + " * " +
-                            unique[i][1] + " = " +
-                            unique[previousIndex][1] * unique[currentIndex][1] * unique[i][1] + "\n");
+                    // System.out.println(" ".repeat(currentIndex) + "Found number of items: " +
+                    // unique[previousIndex][1] + " * " +
+                    // unique[currentIndex][1] + " * " +
+                    // unique[i][1] + " = " +
+                    // unique[previousIndex][1] * unique[currentIndex][1] * unique[i][1] + "\n");
                     completed.put(previousIndex + "-" + currentIndex + "-" + i, true);
                     result += unique[previousIndex][1] * unique[currentIndex][1] * unique[i][1];
                 }
@@ -188,10 +189,10 @@ public class Solution {
 
         if (!notFirstIteration && currentIndex < unique.length - 1 && unique[currentIndex + 1][0] != -1) {
             boolean complete = anyKeyStartsWith(String.valueOf(currentIndex + 1));
-            System.out.println(" ".repeat(currentIndex) + "Completed " +
-                    unique[currentIndex + 1][0] + "("
-                    + (currentIndex + 1) + "): " +
-                    complete);
+            // System.out.println(" ".repeat(currentIndex) + "Completed " +
+            // unique[currentIndex + 1][0] + "("
+            // + (currentIndex + 1) + "): " +
+            // complete);
             if (!complete) {
                 result += iteration(currentIndex + 1, -1);
             }
