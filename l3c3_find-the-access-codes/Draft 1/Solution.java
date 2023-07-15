@@ -18,18 +18,25 @@ public class Solution {
 
         // System.out.println(Solution.solution(new int[] { 1, 1 })); // Expected
         // output: 0
-        System.out.println(Solution.solution(new int[] { 3, 4, 6, 8, 5, 16, 18, 54 })); // Expected output: 0
-        System.out.println(Solution.solution(new int[] { 1, 2, 4 })); // Expected output: 1
-        System.out.println(Solution.solution(new int[] { 1, 2, 4, 1, 2, 4, 1, 2, 4 })); // Expected output: 9
+        // System.out.println(Solution.solution(new int[] { 3, 4, 6, 8, 5, 16, 18, 54
+        // })); // Expected output: 0
+        // System.out.println(Solution.solution(new int[] { 1, 2, 4 })); // Expected
+        // output: 1
+        // System.out.println(Solution.solution(new int[] { 1, 2, 4, 1, 2, 4, 1, 2, 4
+        // })); // Expected output: 9
         System.out.println(Solution.solution(new int[] { 2, 4, 4, 8, 8, 8, 16 })); // Expected output: 5
-        System.out.println(Solution.solution(new int[] { 1, 999999, 999999 })); // Expected output: 1
-        System.out.println(Solution.solution(new int[] { 1, 1, 1, 2, 2, 2, 4, 4, 4,
-                8, 8, 8 })); // Expected output: 12
-        System.out.println(Solution.solution(new int[] { 1, 1, 1, 1, 1 })); // Expected output: 0
-        System.out.println(Solution.solution(new int[] { 1, 2, 4, 1, 2, 4 })); // Expected output: 2
-        System.out.println(Solution.solution(new int[] { 1, 3, 5, 2, 4, 6, 8, 10 }));// Expected output: 4
+        // System.out.println(Solution.solution(new int[] { 1, 999999, 999999 })); //
+        // Expected output: 1
+        // System.out.println(Solution.solution(new int[] { 1, 1, 1, 2, 2, 2, 4, 4, 4,
+        // 8, 8, 8 })); // Expected output: 12
+        // System.out.println(Solution.solution(new int[] { 1, 1, 1, 1, 1 })); //
+        // Expected output: 0
+        // System.out.println(Solution.solution(new int[] { 1, 2, 4, 1, 2, 4 })); //
+        // Expected output: 2
+        // System.out.println(Solution.solution(new int[] { 1, 3, 5, 2, 4, 6, 8, 10
+        // }));// Expected output: 4
 
-        System.out.println(Solution.solution(array)); // Expected output: "4"
+        // System.out.println(Solution.solution(array)); // Expected output: "4"
 
         // get the end time
         long end = System.nanoTime();
@@ -73,8 +80,13 @@ public class Solution {
 
                 if (firstIteration) {
                     // System.out.println(" ".repeat(currentIndex)
-                    // + "(" + list[previousIndex] + "," + list[currentIndex] + ","
-                    // + list[i] + ")\n");
+                    // + "(" + list[previousIndex] + "(" + previousIndex + ")" + "," +
+                    // list[currentIndex] + "("
+                    // + currentIndex + ")"
+                    // + ","
+                    // + list[i] + "(" + i + ")" + ")\n");
+
+                    System.out.println("(" + previousIndex + "," + currentIndex + "," + i + ")\n");
                     completed[previousIndex][currentIndex][i] = true;
                     result++;
                 }
@@ -86,16 +98,28 @@ public class Solution {
 
         }
 
-        if (!firstIteration)
+        // if (!firstIteration)
 
-            for (int i = currentIndex + 1; i < list.length; i++) {
-                boolean complete = boolMatrixContains(Solution.completed[i], true);
-                // System.out.println(" ".repeat(currentIndex) + "Completed " + list[i] + ": " +
-                // complete);
-                if (!complete) {
-                    result += iteration(i, -1);
-                }
+        // for (int i = currentIndex + 1; i < list.length; i++) {
+        // boolean complete = boolMatrixContains(Solution.completed[i], true);
+        // // System.out.println(" ".repeat(currentIndex) + "Completed " + list[i] + ":
+        // " +
+        // // complete);
+        // if (!complete) {
+        // result += iteration(i, -1);
+        // }
+        // }
+
+        if (!firstIteration && currentIndex < list.length - 1) {
+            boolean complete = boolMatrixContains(Solution.completed[currentIndex + 1], true);
+            // System.out.println(" ".repeat(currentIndex) + "Completed " +
+            // unique[currentIndex + 1][0] + "("
+            // + (currentIndex + 1) + "): " +
+            // complete);
+            if (!complete) {
+                result += iteration(currentIndex + 1, -1);
             }
+        }
 
         return result;
 

@@ -1,6 +1,8 @@
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class Solution {
 
@@ -28,6 +30,8 @@ public class Solution {
         // System.out.println(Solution.solution(new int[] { 1, 2, 4, 1, 2, 4, 1, 2, 4
         // })); // Expected output: 9
         System.out.println(Solution.solution(new int[] { 2, 4, 4, 8, 8, 8, 16 })); //
+        // System.out.println(Solution.solution(new int[] { 1, 2, 3, 4, 5, 6 })); //
+        // Expected output: 9
         // Expected output: 5
         // System.out.println(Solution.solution(new int[] { 1, 999999, 999999 })); //
         // Expected output: 1
@@ -63,8 +67,76 @@ public class Solution {
         int noOfTuples = 0;
         noOfTuples = iteration(0, -1);
 
+        // for (String key : completed.keySet()) {
+        // System.out.println(key + " : " + completed.get(key));
+        // }
+
+        Set<String> sortedIndividuals = convertToSet(completed);
+        noOfTuples += addPairCombinations(sortedIndividuals);
+        noOfTuples += addSingleCombinations();
+
         // System.out.println(iteration(noOfTuples, noOfTuples));
         return noOfTuples;
+    }
+
+    public static Set<String> convertToSet(Map<String, Boolean> map) {
+        Set<String> set = new HashSet<String>();
+        for (String key : map.keySet()) {
+            String[] keys = key.split("-");
+            set.add(keys[0] + "-" + keys[1]);
+            set.add(keys[1] + "-" + keys[2]);
+        }
+
+        // System.out.println(set);
+        return set;
+    }
+
+    public static int addPairCombinations(Set<String> set) {
+        int result = 0;
+        for (String key : set) {
+            String[] keys = key.split("-");
+            boolean[] hasDuplicates = new boolean[keys.length];
+            for (int i = 0; i < keys.length; i++) {
+                hasDuplicates[i] = unique[Integer.parseInt(keys[i])][1] > 1;
+            }
+            if (!hasDuplicates[0] && !hasDuplicates[1])
+                continue;
+            if (hasDuplicates[0] && hasDuplicates[1]) {
+                result += sumOfNNaturalNumbers(unique[Integer.parseInt(keys[0])][1] - 1)
+                        * sumOfNNaturalNumbers(unique[Integer.parseInt(keys[1])][1] - 1);
+            } else {
+                if (hasDuplicates[0]) {
+                    result += sumOfNNaturalNumbers(unique[Integer.parseInt(keys[0])][1] - 1);
+                } else {
+                    result += sumOfNNaturalNumbers(unique[Integer.parseInt(keys[1])][1] - 1);
+                }
+            }
+        }
+        return result;
+    }
+
+    public static int addSingleCombinations() {
+        // System.out.println("Single Combinations");
+        int result = 0;
+        for (int i = 0; i < unique.length && unique[i][0] != -1; i++) {
+            // System.out.println(unique[i][0] + " : " + unique[i][1]);
+            if (unique[i][1] > 3) {
+                for (int j = 1; j < unique[i][1] - 1; j++)
+                    result += sumOfNNaturalNumbers(j);
+                // System.out.println("(" + unique[i][0] + "," + unique[i][0] + "," +
+                // unique[i][0] + ")");
+
+            } else if (unique[i][1] == 3) {
+                result += 1;
+                // System.out.println("(" + unique[i][0] + "," + unique[i][0] + "," +
+                // unique[i][0] + ")");
+            }
+        }
+        return result;
+    }
+
+    public static int sumOfNNaturalNumbers(int n) {
+        return (n * (n + 1)) / 2;
     }
 
     public static int iteration(int currentIndex, int previousIndex) {
@@ -75,21 +147,30 @@ public class Solution {
 
         // visited[currentIndex] = !addTuple;
 
-        for (int i = currentIndex + 1; unique[i][0] != -1 && i < unique.length; i++) {
+        for (int i = currentIndex + 1; i < unique.length && unique[i][0] != -1; i++) {
             System.out.println(
                     " ".repeat(currentIndex) + "Checking " + unique[i][0] + " with " +
                             unique[currentIndex][0]);
 
             if (unique[i][0] % unique[currentIndex][0] == 0
                     && (!notFirstIteration || !completed.containsKey(previousIndex + "-" + currentIndex + "-" + i))) {
-                // System.out.println(" ".repeat(currentIndex)
-                // + "Found Matching " + list[i] + " with " +
-                // list[currentIndex]);
+                System.out.println(" ".repeat(currentIndex)
+                        + "Found Matching " + unique[i][0] + " with " +
+                        unique[currentIndex][0]);
 
                 if (notFirstIteration) {
                     System.out.println(" ".repeat(currentIndex)
-                            + "(" + unique[previousIndex][0] + "," + unique[currentIndex][0] + ","
-                            + unique[i][0] + ")\n");
+                            + "(" + unique[previousIndex][0] + "(" + previousIndex + ")" + "," +
+                            unique[currentIndex][0] + "("
+                            + currentIndex + ")"
+                            + ","
+                            + unique[i][0] + "(" + i + ")" + ")\n");
+
+                    System.out.println(" ".repeat(currentIndex) + "Found number of items: " +
+                            unique[previousIndex][1] + " * " +
+                            unique[currentIndex][1] + " * " +
+                            unique[i][1] + " = " +
+                            unique[previousIndex][1] * unique[currentIndex][1] * unique[i][1] + "\n");
                     completed.put(previousIndex + "-" + currentIndex + "-" + i, true);
                     result += unique[previousIndex][1] * unique[currentIndex][1] * unique[i][1];
                 }
@@ -101,16 +182,16 @@ public class Solution {
 
         }
 
-        if (!notFirstIteration)
-
-            for (int i = currentIndex + 1; unique[i][0] != -1 && i < unique.length; i++) {
-                boolean complete = anyKeyStartsWith(String.valueOf(i));
-                System.out.println(" ".repeat(currentIndex) + "Completed " + unique[i][0] + "(" + i + "): " +
-                        complete);
-                if (!complete) {
-                    result += iteration(i, -1);
-                }
+        if (!notFirstIteration && currentIndex < unique.length - 1 && unique[currentIndex + 1][0] != -1) {
+            boolean complete = anyKeyStartsWith(String.valueOf(currentIndex + 1));
+            System.out.println(" ".repeat(currentIndex) + "Completed " +
+                    unique[currentIndex + 1][0] + "("
+                    + (currentIndex + 1) + "): " +
+                    complete);
+            if (!complete) {
+                result += iteration(currentIndex + 1, -1);
             }
+        }
 
         return result;
 
@@ -126,36 +207,23 @@ public class Solution {
 
     static int[][] removeDuplicates(int[] arr) {
         int[][] result = new int[arr.length][2];
-        // Arrays.fill(result, new int[] { -1, 0 });
-        int j = 0;
-        for (int i = 0; i < arr.length - 1; i++) {
-            // System.out.println("\n\nChecking " + arr[i] + " with " + arr[i + 1]);
-            if (arr[i] != arr[i + 1]) {
-                if (i - 1 < 0 || arr[i - 1] != arr[i]) {
-                    // System.out.println("Adding " + arr[i]);
 
+        int j = 0;
+        for (int i = 0; i < arr.length; ++i) {
+            if (j == 0) {
+                result[j][0] = arr[i];
+                result[j][1] = 1;
+                j++;
+            } else {
+                if (arr[i] == result[j - 1][0]) {
+                    result[j - 1][1]++;
+                } else {
                     result[j][0] = arr[i];
                     result[j][1] = 1;
                     j++;
-
-                } else {
-                    // System.out.println("Incrementing 2" + arr[i + 1]);
-                    result[j - 1][1] += 1;
                 }
-                result[j][0] = arr[i + 1];
-                result[j][1] = 0;
-                j++;
-
-            } else {
-                // System.out.println("Incrementing " + arr[i]);
-                // System.out.println("Before: " + Arrays.toString(result[j - 1]));
-                result[j - 1][1] += 1;
-                // System.out.println("Incremented " + arr[i] + " to " + result[j - 1][1]);
             }
-
         }
-
-        result[j - 1][1] += 1;
 
         if (j != arr.length) {
             result[j][0] = -1;
@@ -163,5 +231,6 @@ public class Solution {
         }
 
         return result;
+
     }
 }
