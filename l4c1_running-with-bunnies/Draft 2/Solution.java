@@ -117,8 +117,14 @@ public class Solution {
             }
 
             if (next == -1) {
-                // System.out.println(" ".repeat(indent) + "No more bunnies to pick up.
-                // Revert");
+                if (current == timeMatrix.length - 1 && limit >= 0) {
+                    result.success = true;
+                    // System.out.println(" ".repeat(indent) + "No more bunnies to pick up. Exit");
+                } else {
+                    result.success = false;
+                    // System.out.println(" ".repeat(indent) + "No more bunnies to pick up.
+                    // Revert");
+                }
                 return result;
                 // pickUpBunnies(timeMatrix.length - 1, current);
             } else if (timeMatrix[current][next] >= limit) {
