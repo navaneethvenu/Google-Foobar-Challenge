@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class Solution {
@@ -14,7 +16,7 @@ public class Solution {
 
         Solution.solution(new int[][] { { 0, 2, 2, 2, -1 }, { 9, 0, 2, 2, -1 }, { 9,
                 3, 0, 2, -1 },
-                { 9, 3, 2, 0, -1 }, { 9, 3, 2, 2, 0 } }, 1); // [1,2]
+                { 9, 3, 2, 0, -1 }, { 9, 3, 2, 2, 0 } }, 3); // [1,2]
 
         // Solution.solution(new int[][] { { 0, 1, 1, 1, 1 }, { 1, 0, 1, 1, 1 }, { 1, 1,
         // 0, 1, 1 }, { 1, 1, 1, 0, 1 },
@@ -44,9 +46,11 @@ public class Solution {
 
         ReturnValue returnValue = pickUpBunnies(0, -1, limit, timeMatrix, visited, 0);
 
+        Collections.sort(returnValue.bunnies);
+
         bunnyList = returnValue.bunnies.stream().mapToInt(Integer::intValue).toArray();
 
-        System.out.println("\nBunny List: " + Arrays.toString(bunnyList));
+        // System.out.println("\nBunny List: " + Arrays.toString(bunnyList));
 
         return bunnyList;
 
