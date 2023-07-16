@@ -16,13 +16,13 @@ public class Solution {
 
         // call the method
 
-        // Solution.solution(new int[][] { { 0, 2, 2, 2, -1 }, { 9, 0, 2, 2, -1 }, { 9,
-        // 3, 0, 2, -1 },
-        // { 9, 3, 2, 0, -1 }, { 9, 3, 2, 2, 0 } }, 1); // [1,2]
+        Solution.solution(new int[][] { { 0, 2, 2, 2, -1 }, { 9, 0, 2, 2, -1 }, { 9,
+                3, 0, 2, -1 },
+                { 9, 3, 2, 0, -1 }, { 9, 3, 2, 2, 0 } }, 1); // [1,2]
 
-        Solution.solution(new int[][] { { 0, 1, 1, 1, 1 }, { 1, 0, 1, 1, 1 }, { 1, 1,
-                0, 1, 1 }, { 1, 1, 1, 0, 1 },
-                { 1, 1, 1, 1, 0 } }, 3); // [0, 1]
+        // Solution.solution(new int[][] { { 0, 1, 1, 1, 1 }, { 1, 0, 1, 1, 1 }, { 1, 1,
+        // 0, 1, 1 }, { 1, 1, 1, 0, 1 },
+        // { 1, 1, 1, 1, 0 } }, 3); // [0, 1]
 
         // get the end time
         long end = System.nanoTime();
@@ -50,7 +50,7 @@ public class Solution {
 
         bunnyList = sortedList.stream().mapToInt(Integer::intValue).toArray();
 
-        // System.out.println("\nBunny List: " + Arrays.toString(bunnyList));
+        System.out.println("\nBunny List: " + Arrays.toString(bunnyList));
 
         return bunnyList;
 
@@ -66,30 +66,30 @@ public class Solution {
         }
         if (current != 0 && current != timeMatrix.length - 1)
             visited[current] = true;
-        // System.out.println("\n" + (previous == -1 ? "-" : previous) + " " + current +
-        // " "
-        // + (previous == -1 ? "-" : delta) + " "
-        // + limit);
+        System.out.println("\n" + (previous == -1 ? "-" : previous) + " " + current +
+                " "
+                + (previous == -1 ? "-" : delta) + " "
+                + limit);
 
         if (current != 0 && current != timeMatrix.length - 1) {
-            // System.out.print("Bunny " + (current - 1) + " picked up. ");
+            System.out.print("Bunny " + (current - 1) + " picked up. ");
             sortedList.add(current - 1);
         }
 
         if (previous == -1) {
-            // System.out.print("Bulkhead initially open.");
+            System.out.print("Bulkhead initially open.");
         }
 
         if (limit + delta >= 0 && limit < 0) {
-            // System.out.print("Bulkhead closes.");
+            System.out.print("Bulkhead closes.");
         }
 
         if (limit + delta < 0 && limit >= 0) {
-            // System.out.print("Bulkhead Reopens.");
+            System.out.print("Bulkhead Reopens.");
         }
 
         if (current == timeMatrix.length - 1 && limit == 0) {
-            // System.out.print("You and the Bunnies Exit.");
+            System.out.print("You and the Bunnies Exit.");
             return;
         }
 
@@ -106,15 +106,15 @@ public class Solution {
         }
 
         if (next == -1) {
-            // System.out.println("No more bunnies to pick up.");
+            System.out.println("No more bunnies to pick up.");
             return;
             // pickUpBunnies(timeMatrix.length - 1, current);
-        } else if (timeMatrix[current][next] >= limit) {
+        } else if (timeMatrix[current][next] > limit) {
             if (current == timeMatrix.length - 1) {
-                // System.out.print("You and the bunnies exit (no time)");
+                System.out.print("You and the bunnies exit (no time)");
                 return;
             } else {
-                // System.out.print("Other case");
+                System.out.print("Other case");
                 return;
             }
         }

@@ -1,0 +1,21 @@
+- 0 - 3
+  0 1 1 2 - B0
+    1 2 1 1 - B1
+      2 3 1 0 - B2
+        3 4 1 -1
+	    bunnies done, but time bad
+	    return false;
+      get false
+      no alternatives
+      return false;
+    get false
+    try alternative, go to end
+      2 4 1 0
+      bunnies done, time good
+      return true;
+    get true;
+    return true;
+  get true;
+  return true;
+get true;
+return true;
