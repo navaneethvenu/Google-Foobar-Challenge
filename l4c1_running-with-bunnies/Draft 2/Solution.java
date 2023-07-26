@@ -17,7 +17,7 @@ public class Solution {
         // { 9, 3, 2, 0, -1 }, { 9, 3, 2, 2, 0 } }, 1); // [1,2]
 
         Solution.solution(new int[][] { { 0, 0, 0, -1, 0 }, { 0, -1, 0, 0, 0 }, { 0, 0, 0, 0, 0 },
-                { 0, 3, 4, 5, 6 }, { 0, 0, 0, 0, 0 } }, 1); // [0,1]
+                { 0, 3, 4, 5, 6 }, { 0, 0, 0, 0, 0 } }, 0); // [0,1]
 
         // Solution.solution(new int[][] { { 0, 1, 1, 1, 1 }, { 1, 0, 1, 1, 1 }, { 1, 1,
         // 0, 1, 1 }, { 1, 1, 1, 0, 1 },
@@ -50,7 +50,7 @@ public class Solution {
 
         bunnyList = returnValue.bunnies.stream().mapToInt(Integer::intValue).toArray();
 
-        System.out.println("\nBunny List: " + Arrays.toString(bunnyList));
+        // System.out.println("\nBunny List: " + Arrays.toString(bunnyList));
 
         return bunnyList;
 
@@ -59,7 +59,8 @@ public class Solution {
     public static ReturnValue pickUpBunnies(int current, int previous, int limit, int[][] timeMatrix, boolean[] visited,
             int indent) {
 
-        System.out.println(" ".repeat(indent) + "Bool: " + Arrays.toString(visited));
+        // System.out.println(" ".repeat(indent*2) + "Bool: " +
+        // Arrays.toString(visited));
 
         List<Integer> bunnies = new ArrayList<Integer>();
         ReturnValue result = new ReturnValue(false, bunnies);
@@ -71,30 +72,32 @@ public class Solution {
         }
         if (current != 0 && current != timeMatrix.length - 1)
             visited[current] = true;
-        System.out.println("\n" + " ".repeat(indent) + (previous == -1 ? "-" : previous) + " " + current +
-                " "
-                + (previous == -1 ? "-" : delta) + " "
-                + limit);
+        // System.out.println("\n" + " ".repeat(indent * 2) + (previous == -1 ? "-" :
+        // previous) + " " + current +
+        // " "
+        // + (previous == -1 ? "-" : delta) + " "
+        // + limit);
 
         if (current != 0 && current != timeMatrix.length - 1) {
-            System.out.println(" ".repeat(indent) + "Bunny " + (current - 1) + " picked up. ");
+            // System.out.println(" ".repeat(indent * 2) + "Bunny " + (current - 1) + "
+            // picked up. ");
             result.bunnies.add(current - 1);
         }
 
         if (previous == -1) {
-            System.out.println(" ".repeat(indent) + "Bulkhead initially open.");
+            // System.out.println(" ".repeat(indent * 2) + "Bulkhead initially open.");
         }
 
         if (limit + delta >= 0 && limit < 0) {
-            System.out.println(" ".repeat(indent) + "Bulkhead closes.");
+            // System.out.println(" ".repeat(indent * 2) + "Bulkhead closes.");
         }
 
         if (limit + delta < 0 && limit >= 0) {
-            System.out.println(" ".repeat(indent) + "Bulkhead Reopens.");
+            // System.out.println(" ".repeat(indent * 2) + "Bulkhead Reopens.");
         }
 
         if (current == timeMatrix.length - 1 && limit == 0) {
-            System.out.println(" ".repeat(indent) + "You and the Bunnies Exit.");
+            // System.out.println(" ".repeat(indent * 2) + "You and the Bunnies Exit.");
             result.success = true;
             return result;
         }
@@ -105,11 +108,12 @@ public class Solution {
         int tryAgainCount = 0;
         do {
             int next = -1;
-            // System.out.println(" ".repeat(indent) + "Try again: " + tryAgain);
+            // System.out.println(" ".repeat(indent*2) + "Try again: " + tryAgain);
 
-            System.out.println(" ".repeat(indent) + "Trying Tries: " + Arrays.toString(tried));
+            // System.out.println(" ".repeat(indent*2) + "Trying Tries: " +
+            // Arrays.toString(tried));
 
-            for (int i = 1; i < timeMatrix.length; ++i) {
+            for (int i = 0; i < timeMatrix.length; ++i) {
                 if (i != current && !tried[i]) {
                     // System.out.println("i: " + i + " current: " + current + " next: " + next);
                     if (next == -1)
@@ -122,49 +126,57 @@ public class Solution {
             if (next == -1) {
                 if (current == timeMatrix.length - 1 && limit >= 0) {
                     result.success = true;
-                    System.out.println(" ".repeat(indent) + "No more bunnies to pick up. Exit");
+                    // System.out.println(" ".repeat(indent * 2) + "No more bunnies to pick up.
+                    // Exit");
                 } else {
                     result.success = false;
-                    System.out.println(" ".repeat(indent) + "No more bunnies to pick up. Revert");
+                    // System.out.println(" ".repeat(indent * 2) + "No more bunnies to pick up.
+                    // Revert");
                 }
                 return result;
                 // pickUpBunnies(timeMatrix.length - 1, current);
             } else if (timeMatrix[current][next] >= limit) {
                 if (current == timeMatrix.length - 1) {
-                    // System.out.println(" ".repeat(indent) + "Should You and the bunnies exit (no
+                    // System.out.println(" ".repeat(indent*2) + "Should You and the bunnies exit
+                    // (no
                     // time)?");
                     tryAgainCount++;
-                    System.out.println(" ".repeat(indent) + "Try Again Count: " + tryAgainCount);
+                    tried[next] = true;
+                    // System.out.println(" ".repeat(indent * 2) + "Try Again Count: " +
+                    // tryAgainCount);
                     ReturnValue returnValue = pickUpBunnies(next, current, limit, timeMatrix, visited.clone(),
                             indent + 1);
                     boolean continuePicking = returnValue.success;
 
                     if (continuePicking) {
-                        // System.out.println("\n" + " ".repeat(indent) + "You and the bunnies
+                        // System.out.println("\n" + " ".repeat(indent*2) + "You and the bunnies
                         // continued");
                         result.success = true;
                         result.bunnies.addAll(returnValue.bunnies);
                     } else {
-                        // System.out.println("\n" + " ".repeat(indent) + "You and the bunnies exit (no
+                        // System.out.println("\n" + " ".repeat(indent*2) + "You and the bunnies exit
+                        // (no
                         // time)");
                     }
                     return result;
                 } else {
-                    // System.out.print(" ".repeat(indent) + "Other case but continue");
+                    // System.out.print(" ".repeat(indent*2) + "Other case but continue");
 
                     // return false;
                 }
             }
 
             tryAgainCount++;
-            System.out.println(" ".repeat(indent) + "Try Again Count: " + tryAgainCount);
+            // System.out.println(" ".repeat(indent*2) + "Try Again Count: " +
+            // tryAgainCount);
             ReturnValue returnValue = pickUpBunnies(next, current, limit, timeMatrix, visited.clone(), indent + 1);
             tryAgain = !returnValue.success;
             tried[next] = true;
 
             boolean trialsOver = true;
 
-            // System.out.println(" ".repeat(indent) + "Tried: " + Arrays.toString(tried));
+            // System.out.println(" ".repeat(indent*2) + "Tried: " +
+            // Arrays.toString(tried));
 
             for (boolean complete : tried) {
                 if (!complete) {
